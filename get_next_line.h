@@ -6,7 +6,7 @@
 /*   By: fli <fli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:41:56 by fli               #+#    #+#             */
-/*   Updated: 2024/05/30 18:34:06 by fli              ###   ########.fr       */
+/*   Updated: 2024/06/03 16:55:37 by fli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ typedef struct s_list
 
 char	*get_next_line(int fd);
 
-int		end_line(t_list *current);
+int		end_line(t_list **current);
 
 int		count_char(t_list **lst);
-
-int		ft_strlen(char *str);
 
 t_list	*ft_lstnew(int fd);
 
@@ -44,5 +42,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 char	*ft_strdup(t_list **init, char **gnl);
 
 void	ft_lstclear(t_list **lst);
+
+void	ft_lstdelone(t_list **lst);
 
 #endif

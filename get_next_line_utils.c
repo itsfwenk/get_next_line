@@ -6,13 +6,13 @@
 /*   By: fli <fli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:56:56 by fli               #+#    #+#             */
-/*   Updated: 2024/05/30 18:37:27 by fli              ###   ########.fr       */
+/*   Updated: 2024/06/03 16:55:21 by fli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_strlen(char *str)
+#include <stdio.h>
+/*int	ft_strlen(char *str)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ int	ft_strlen(char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
-}
+}*/
 
 t_list	*ft_lstnew(int fd)
 {
@@ -32,10 +32,13 @@ t_list	*ft_lstnew(int fd)
 		return (NULL);
 	read_return = read(fd, new->s, BUFFER_SIZE);
 	if (read_return <= 0)
-		return (NULL);
-	(new->s)[ft_strlen(new->s)] = '\0';
+		{
+			free(new);
+			return (NULL);
+		}
+	(new->s)[read_return] = '\0';
 	new->min = 0;
-	new->max = ft_strlen(new->s);
+	new->max = read_return;
 	new->next = NULL;
 	return (new);
 }
@@ -55,7 +58,10 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	while (last != NULL)
 	{
 		if ((last->next) == NULL)
+		{
 			last->next = new;
+			return ;
+		}
 		last = last->next;
 	}
 }
@@ -64,27 +70,30 @@ char	*ft_strdup(t_list **init, char **gnl)
 {
 	int		j;
 	t_list	*pos;
-	t_list	*temp;
 
-	*gnl = malloc(count_char(init) * sizeof(char));
+	*gnl = malloc((1 + count_char(init)) * sizeof(char));
 	if (*gnl == NULL)
 		return (NULL);
 	j = 0;
 	pos = *init;
-	while ((pos->s)[pos->min] != '\n'
-		|| (pos->min == pos->max && pos->max != BUFFER_SIZE))
+	while (pos && ((pos->s)[pos->min] != '\n'
+		|| (pos->min != pos->max && pos->max != BUFFER_SIZE)))
 	{
 		if ((pos->s)[pos->min] == '\0' && pos->next)
+			ft_lstdelone(init);
+		pos = *init;
+		if ((pos->s)[pos->min] == '\n')
 		{
-			temp = pos;
-			pos = pos->next;
-			free(temp);
+				pos->min = (pos->min) + 1;
+				break;
 		}
-		*gnl[j++] = (pos->s)[pos->min];
+		(*gnl)[j++] = (pos->s)[pos->min];
 		pos->min = (pos->min) + 1;
 	}
+	(*gnl)[j] = '\0';
 	return (*gnl);
 }
+
 void	ft_lstclear(t_list **lst)
 {
 	t_list	*temp;
@@ -97,4 +106,15 @@ void	ft_lstclear(t_list **lst)
 		free(*lst);
 		*lst = temp;
 	}
+}
+
+void	ft_lstdelone(t_list **lst)
+{
+	t_list	*temp;
+
+	if (!lst)
+		return;
+	temp = (*lst)->next;
+	free(*lst);
+	*lst = temp;
 }
