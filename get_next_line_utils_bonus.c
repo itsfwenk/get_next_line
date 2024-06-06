@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fli <fli@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 16:56:56 by fli               #+#    #+#             */
-/*   Updated: 2024/06/06 17:04:08 by fli              ###   ########.fr       */
+/*   Updated: 2024/06/06 16:07:51 by fli              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
+/*int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}*/
 
 t_list	*ft_lstnew(int fd, t_list **init)
 {
